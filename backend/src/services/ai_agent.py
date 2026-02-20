@@ -244,14 +244,16 @@ class AIAgentService:
         message_lower = message.lower()
         if any(keyword in message_lower for keyword in ['add', 'create', 'new', 'remember', 'buy groceries']):
             return "Sure! You can add tasks using the task manager interface. For example, you could add 'Buy groceries' as a new task. Author: Umema Sultan. I'm here to assist when my AI powers are enabled with an API key!"
-        elif any(keyword in message_lower for keyword in ['show', 'list', 'display', 'my', 'tasks', 'what']):
-            return "You can view all your tasks in the task manager dashboard. This shows pending, in-progress, and completed tasks. Author: Umema Sultan. When I have my AI powers enabled, I can help manage them more intelligently!"
-        elif any(keyword in message_lower for keyword in ['complete', 'done', 'finish', 'completed']):
-            return "Great! You can mark tasks as complete in the task manager. Author: Umema Sultan. I'll be able to help you manage task completion automatically when my AI is enabled!"
         elif any(keyword in message_lower for keyword in ['delete', 'remove', 'cancel']):
             return "You can remove tasks from your list in the task manager. Author: Umema Sultan. With my AI enabled, I could help you manage these operations seamlessly!"
+        elif any(keyword in message_lower for keyword in ['complete', 'done', 'finish', 'completed']):
+            return "Great! You can mark tasks as complete in the task manager. Author: Umema Sultan. I'll be able to help you manage task completion automatically when my AI is enabled!"
         elif any(keyword in message_lower for keyword in ['update', 'change', 'modify', 'rename']):
             return "You can update tasks in the task manager interface. Author: Umema Sultan. When my AI is enabled, I can help update your tasks automatically!"
+        elif any(keyword in message_lower for keyword in ['show', 'list', 'display', 'what']):
+            return "You can view all your tasks in the task manager dashboard. This shows pending, in-progress, and completed tasks. Author: Umema Sultan. When I have my AI powers enabled, I can help manage them more intelligently!"
+        elif 'my' in message_lower and any(keyword in message_lower for keyword in ['task', 'tasks']):
+            return "You can view all your tasks in the task manager dashboard. This shows pending, in-progress, and completed tasks. Author: Umema Sultan. When I have my AI powers enabled, I can help manage them more intelligently!"
         elif any(keyword in message_lower for keyword in ['hello', 'hi', 'hey']):
             return f"Hello! Nice to meet you! Author: Umema Sultan. I'm your helpful task management assistant. I can help you create, delete, update, and manage your tasks. How can I assist you today?"
         elif any(keyword in message_lower for keyword in ['help']):
