@@ -11,6 +11,7 @@ import TaskCard from '@/components/TaskCard';
 import FilterBar from '@/components/FilterBar';
 import Button from '@/components/Button';
 import { getCurrentUserIdFromToken } from '@/lib/auth';
+import { ChatWidget } from '@/components/chatbot/ChatWidget';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -94,6 +95,8 @@ export default function Dashboard() {
           )}
         </main>
       </div>
+      {/* Floating Chatbot Widget */}
+      <ChatWidget userId={getCurrentUserIdFromToken()?.toString() || '0'} />
     </div>
   );
 }

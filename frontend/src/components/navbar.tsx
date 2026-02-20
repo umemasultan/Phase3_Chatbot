@@ -6,22 +6,38 @@ import { usePathname } from 'next/navigation';
 import { User } from '@/types/task';
 import Button from './Button';
 import { removeToken } from '@/lib/auth';
+import { authApi } from '@/lib/api';
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const pathname = usePathname();
 
-  // Check for user in localStorage (mock auth)
+  // Fetch user info from API when token exists
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      // In a real app, we'd decode the JWT to get user info
-      setUser({
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com'
-      });
-    }
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          // Fetch actual user info from API
+          const userData = await authApi.getCurrentUser();
+          // Update name to "Umema Sultan" as requested
+          setUser({
+            ...userData,
+            name: 'Umema Sultan'
+          });
+        } catch (error) {
+          console.error('Error fetching user:', error);
+          // Fallback to hardcoded user if API fails
+          setUser({
+            id: 1,
+            name: 'Umema Sultan',
+            email: 'umema@example.com'
+          });
+        }
+      }
+    };
+
+    fetchUser();
   }, []);
 
   const handleLogout = () => {
@@ -31,7 +47,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Dashboard', href: '/' },
-    { name: 'Tasks', href: '/tasks' },
+    { name: 'All Tasks', href: '/tasks' },
   ];
 
   return (

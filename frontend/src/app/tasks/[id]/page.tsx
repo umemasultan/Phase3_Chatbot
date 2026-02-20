@@ -242,11 +242,11 @@ export default function TaskDetailPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
                   <p className="text-sm text-gray-600">Created At</p>
-                  <p className="text-gray-900">{task.createdAt.toLocaleString()}</p>
+                  <p className="text-gray-900">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Last Updated</p>
-                  <p className="text-gray-900">{task.updatedAt.toLocaleString()}</p>
+                  <p className="text-gray-900">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</p>
                 </div>
               </div>
 
