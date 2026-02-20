@@ -243,17 +243,21 @@ class AIAgentService:
         """
         message_lower = message.lower()
         if any(keyword in message_lower for keyword in ['add', 'create', 'new', 'remember', 'buy groceries']):
-            return "Sure! You can add tasks using the task manager interface. For example, you could add 'Buy groceries' as a new task. I'm here to assist when my AI powers are enabled with an API key!"
+            return "Sure! You can add tasks using the task manager interface. For example, you could add 'Buy groceries' as a new task. Author: Umema Sultan. I'm here to assist when my AI powers are enabled with an API key!"
         elif any(keyword in message_lower for keyword in ['show', 'list', 'display', 'my', 'tasks', 'what']):
-            return "You can view all your tasks in the task manager dashboard. This shows pending, in-progress, and completed tasks. When I have my AI powers enabled, I can help manage them more intelligently!"
+            return "You can view all your tasks in the task manager dashboard. This shows pending, in-progress, and completed tasks. Author: Umema Sultan. When I have my AI powers enabled, I can help manage them more intelligently!"
         elif any(keyword in message_lower for keyword in ['complete', 'done', 'finish', 'completed']):
-            return "Great! You can mark tasks as complete in the task manager. I'll be able to help you manage task completion automatically when my AI is enabled!"
+            return "Great! You can mark tasks as complete in the task manager. Author: Umema Sultan. I'll be able to help you manage task completion automatically when my AI is enabled!"
         elif any(keyword in message_lower for keyword in ['delete', 'remove', 'cancel']):
-            return "You can remove tasks from your list in the task manager. With my AI enabled, I could help you manage these operations seamlessly!"
-        elif any(keyword in message_lower for keyword in ['update', 'change', 'modify', 'rename', 'hello', 'hi', 'help']):
-            return "Hello there! I'm your helpful task management assistant. While I'm currently running in demo mode (without an API key), I can help you manage tasks through the UI. Enable my AI powers by configuring an OpenAI API key in the backend settings for full voice and command capabilities!"
+            return "You can remove tasks from your list in the task manager. Author: Umema Sultan. With my AI enabled, I could help you manage these operations seamlessly!"
+        elif any(keyword in message_lower for keyword in ['update', 'change', 'modify', 'rename']):
+            return "You can update tasks in the task manager interface. Author: Umema Sultan. When my AI is enabled, I can help update your tasks automatically!"
+        elif any(keyword in message_lower for keyword in ['hello', 'hi', 'hey']):
+            return f"Hello! Nice to meet you! Author: Umema Sultan. I'm your helpful task management assistant. I can help you create, delete, update, and manage your tasks. How can I assist you today?"
+        elif any(keyword in message_lower for keyword in ['help']):
+            return "I'm here to help manage your tasks! You can ask me to create, delete, update, or list tasks. Author: Umema Sultan. Try commands like 'add task', 'show tasks', 'complete task', or 'delete task'. How can I assist you?"
         else:
-            return "Hello! I'm here to help manage your tasks! You can add, track, and complete tasks through the interface. When my AI features are enabled with an API key, I can respond to commands like 'add task', 'show tasks', 'complete task', etc. How can I assist you today?"
+            return f"Hello! Author: Umema Sultan. I'm here to help manage your tasks! You can add, track, and complete tasks through the interface. I can help with creating, deleting, updating, and managing your tasks. How can I assist you today?"
 
     def process_user_message(self, user_id: int, message: str, conversation_id: str = None) -> Dict[str, Any]:
         """
