@@ -28,8 +28,9 @@ class User(UserBase, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 
-    # Relationship to tasks
+    # Relationships to tasks and conversations
     tasks: list["Task"] = Relationship(back_populates="user")
+    conversations: list["Conversation"] = Relationship(back_populates="user")
 
     def verify_password(self, plain_password: str) -> bool:
         return pwd_context.verify(plain_password, self.hashed_password)

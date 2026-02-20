@@ -8,15 +8,20 @@ if src_dir not in sys.path:
     sys.path.insert(0, src_dir)
 
 # Import using absolute imports - from the db module
-from db.database import engine
-from models.user import User
-from models.task import Task
+from db.database import engine, create_db_and_tables
 
 
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
+def test_db_connection():
+    # Test connection by trying to create tables
+    try:
+        create_db_and_tables()
+        print("Database connected and tables verified successfully!")
+        return True
+    except Exception as e:
+        print(f"Error with database connection: {e}")
+        return False
 
 
 if __name__ == "__main__":
-    create_db_and_tables()
-    print("Database and tables created successfully!")
+    if test_db_connection():
+        print("Database and tables created successfully!")

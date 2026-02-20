@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_DAYS: int = 7  # 7 days as per spec
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080  # 7 days in minutes (7*24*60)
+    OPENAI_API_KEY: Optional[str] = None
 
     class Config:
         env_file = ".env"

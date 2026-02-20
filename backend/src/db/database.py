@@ -3,20 +3,32 @@ from sqlalchemy import event
 from sqlalchemy.engine import Engine
 import sqlite3
 import os
-try:
-    # Try relative imports first (when run as a module)
-    from ..models.task import Task
-    from ..models.user import User
-except ImportError:
-    # Fall back to absolute imports (when run directly)
-    from models.task import Task
-    from models.user import User
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./taskmanager.db")
 
 engine = create_engine(DATABASE_URL, echo=True)
 
 def create_db_and_tables():
+    # Import models here to register them with the metadata
+    # Use absolute imports to handle the package structure
+    try:
+        # Try relative imports first (when run as a module)
+        from ..models.task import Task
+        from ..models.user import User
+        from ..models.conversation import Conversation
+        from ..models.message import Message
+    except (ImportError, ValueError):
+        # Fall back to absolute imports (when run directly)
+        # We'll import these inside the function to avoid import-time issues
+        import sys
+        import os
+        src_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if src_dir not in sys.path:
+            sys.path.insert(0, src_dir)
+        from models.task import Task
+        from models.user import User
+        from models.conversation import Conversation
+        from models.message import Message
     SQLModel.metadata.create_all(engine)
 
 @event.listens_for(Engine, "connect")

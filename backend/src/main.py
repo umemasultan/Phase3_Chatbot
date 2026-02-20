@@ -6,12 +6,15 @@ src_dir = os.path.dirname(os.path.abspath(__file__))
 if src_dir not in sys.path:
     sys.path.insert(0, src_dir)
 
+# Import modules early to register models with SQLModel once
+# This ensures that table definitions are only registered once
+from db.init_db import create_db_and_tables
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import modules using absolute paths within the same package
-from routers import task, task_v2, auth
-from db.init_db import create_db_and_tables
+from routers import task, task_v2, auth, chat
 
 app = FastAPI(title="Task Manager API")
 
@@ -33,6 +36,7 @@ app.add_middleware(
 app.include_router(task.router)  # Keep old router for compatibility
 app.include_router(task_v2.router)  # New spec-compliant router
 app.include_router(auth.router)
+app.include_router(chat.router)   # AI Chatbot router
 
 @app.get("/")
 def read_root():
