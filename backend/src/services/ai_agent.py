@@ -242,7 +242,11 @@ class AIAgentService:
         Provide a simple response when OpenAI API is not configured
         """
         message_lower = message.lower()
-        if any(keyword in message_lower for keyword in ['add', 'create', 'new', 'remember', 'buy groceries']):
+        if (any(keyword in message_lower for keyword in ['add task', 'create task', 'new task', 'remember to', 'create new', 'add new']) or
+           ('buy' in message_lower or 'purchase' in message_lower) and (
+               (len(message_lower.split()) <= 4) or
+               (len(message_lower.split()) <= 5 and any(shopping_item in message_lower for shopping_item in ['groceries', 'grocery', 'items', 'things', 'products', 'food', 'purfume', 'perfume', 'purchases', 'supplies', 'essentials', 'medicine', 'medicines', 'gift', 'gifts', 'present', 'presents']))
+           )):
             return "Sure! You can add tasks using the task manager interface. For example, you could add 'Buy groceries' as a new task. Author: Umema Sultan. I'm here to assist when my AI powers are enabled with an API key!"
         elif any(keyword in message_lower for keyword in ['delete', 'remove', 'cancel']):
             return "You can remove tasks from your list in the task manager. Author: Umema Sultan. With my AI enabled, I could help you manage these operations seamlessly!"
