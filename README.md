@@ -1,6 +1,6 @@
-# Task Manager Application
+# Phase3_Chatbot - Task Manager Application
 
-This is a full-stack task management application with AI chatbot capabilities.
+Production-ready AI Todo chatbot combining OpenAI Agents, MCP server, and Neon PostgreSQL for persistent, stateless, and scalable task management.
 
 ## Features
 
@@ -8,7 +8,7 @@ This is a full-stack task management application with AI chatbot capabilities.
 - **User Authentication**: JWT-based authentication system
 - **AI Chatbot**: Conversational AI assistant for task management
 - **Real-time Updates**: Live task status updates
-- **Responsive UI**: Mobile-friendly interface
+- **Responsive UI**: Mobile-friendly interface with dark mode support
 
 ## Tech Stack
 
