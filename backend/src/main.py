@@ -23,26 +23,14 @@ app = FastAPI(title="Task Manager API")
 def on_startup():
     create_db_and_tables()
 
-# Configure CORS
+# Configure CORS - MUST be before route definitions
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://localhost:3002",
-        "http://localhost:3003",
-        "http://localhost:3004",
-        "http://localhost:3005",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-        "http://127.0.0.1:3002",
-        "http://127.0.0.1:3003",
-        "http://127.0.0.1:3004",
-        "http://127.0.0.1:3005"
-    ],  # Allow frontend origins including all common ports
+    allow_origins=["*"],  # Allow all origins for development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Include routers

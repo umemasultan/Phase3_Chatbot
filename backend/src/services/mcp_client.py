@@ -46,64 +46,206 @@ class MCPTodoClient:
         """
         Implementation of add_task tool
         """
-        # This would call the actual MCP tool in a real implementation
-        # For now, we'll return a mock response
-        return {
-            "success": True,
-            "task_id": 1,  # Mock ID
-            "message": f"Task '{args.get('title', 'Untitled')}' added successfully"
-        }
+        try:
+            from sqlmodel import Session
+            from db.database import engine
+            from models.task import Task
+
+            user_id = args.get('user_id')
+            title = args.get('title', 'Untitled')
+            description = args.get('description', '')
+
+            with Session(engine) as session:
+                # Create new task
+                new_task = Task(
+                    user_id=user_id,
+                    title=title,
+                    description=description,
+                    status="pending"
+                )
+                session.add(new_task)
+                session.commit()
+                session.refresh(new_task)
+
+                return {
+                    "success": True,
+                    "task_id": new_task.id,
+                    "message": f"Task '{title}' added successfully"
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "message": f"Failed to add task: {str(e)}"
+            }
 
     async def _list_tasks_impl(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """
         Implementation of list_tasks tool
         """
-        # This would call the actual MCP tool in a real implementation
-        # For now, we'll return a mock response
-        return {
-            "success": True,
-            "tasks": [
-                {
-                    "id": 1,
-                    "title": "Sample task",
-                    "description": "Sample description",
-                    "status": "pending",
-                    "created_at": "2023-01-01T00:00:00Z",
-                    "updated_at": "2023-01-01T00:00:00Z"
+        try:
+            from sqlmodel import Session, select
+            from db.database import engine
+            from models.task import Task
+
+            user_id = args.get('user_id')
+            status_filter = args.get('status')
+
+            with Session(engine) as session:
+                query = select(Task).where(Task.user_id == user_id)
+
+                if status_filter:
+                    query = query.where(Task.status == status_filter)
+
+                tasks = session.exec(query).all()
+
+                task_list = []
+                for task in tasks:
+                    task_list.append({
+                        "id": task.id,
+                        "title": task.title,
+                        "description": task.description,
+                        "status": task.status,
+                        "created_at": task.created_at.isoformat() if task.created_at else None,
+                        "updated_at": task.updated_at.isoformat() if task.updated_at else None
+                    })
+
+                return {
+                    "success": True,
+                    "tasks": task_list,
+                    "message": f"Found {len(task_list)} task(s)"
                 }
-            ],
-            "message": "Found 1 tasks"
-        }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "message": f"Failed to list tasks: {str(e)}"
+            }
 
     async def _complete_task_impl(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """
         Implementation of complete_task tool
         """
-        # This would call the actual MCP tool in a real implementation
-        return {
-            "success": True,
-            "message": f"Task {args.get('task_id', 'unknown')} marked as completed"
-        }
+        try:
+            from sqlmodel import Session, select
+            from db.database import engine
+            from models.task import Task
+
+            user_id = args.get('user_id')
+            task_id = args.get('task_id')
+
+            with Session(engine) as session:
+                task = session.exec(
+                    select(Task).where(Task.id == task_id, Task.user_id == user_id)
+                ).first()
+
+                if not task:
+                    return {
+                        "success": False,
+                        "message": f"Task {task_id} not found"
+                    }
+
+                # Toggle completion status
+                task.status = "completed" if task.status != "completed" else "pending"
+                session.add(task)
+                session.commit()
+
+                return {
+                    "success": True,
+                    "message": f"Task '{task.title}' marked as {task.status}"
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "message": f"Failed to complete task: {str(e)}"
+            }
 
     async def _delete_task_impl(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """
         Implementation of delete_task tool
         """
-        # This would call the actual MCP tool in a real implementation
-        return {
-            "success": True,
-            "message": f"Task {args.get('task_id', 'unknown')} deleted successfully"
-        }
+        try:
+            from sqlmodel import Session, select
+            from db.database import engine
+            from models.task import Task
+
+            user_id = args.get('user_id')
+            task_id = args.get('task_id')
+
+            with Session(engine) as session:
+                task = session.exec(
+                    select(Task).where(Task.id == task_id, Task.user_id == user_id)
+                ).first()
+
+                if not task:
+                    return {
+                        "success": False,
+                        "message": f"Task {task_id} not found"
+                    }
+
+                task_title = task.title
+                session.delete(task)
+                session.commit()
+
+                return {
+                    "success": True,
+                    "message": f"Task '{task_title}' deleted successfully"
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "message": f"Failed to delete task: {str(e)}"
+            }
 
     async def _update_task_impl(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """
         Implementation of update_task tool
         """
-        # This would call the actual MCP tool in a real implementation
-        return {
-            "success": True,
-            "message": f"Task {args.get('task_id', 'unknown')} updated successfully"
-        }
+        try:
+            from sqlmodel import Session, select
+            from db.database import engine
+            from models.task import Task
+
+            user_id = args.get('user_id')
+            task_id = args.get('task_id')
+            title = args.get('title')
+            description = args.get('description')
+            status = args.get('status')
+
+            with Session(engine) as session:
+                task = session.exec(
+                    select(Task).where(Task.id == task_id, Task.user_id == user_id)
+                ).first()
+
+                if not task:
+                    return {
+                        "success": False,
+                        "message": f"Task {task_id} not found"
+                    }
+
+                # Update fields if provided
+                if title:
+                    task.title = title
+                if description:
+                    task.description = description
+                if status:
+                    task.status = status
+
+                session.add(task)
+                session.commit()
+
+                return {
+                    "success": True,
+                    "message": f"Task '{task.title}' updated successfully"
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "message": f"Failed to update task: {str(e)}"
+            }
 
     def get_tool_definitions(self) -> list:
         """

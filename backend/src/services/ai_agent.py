@@ -91,7 +91,7 @@ class AIAgentService:
                 # If no API key, provide a friendly response
                 # Get conversation history for context, even if minimal
                 conversation_history = self._get_conversation_history(conversation.id)
-                ai_response = self._get_simple_response(message)
+                ai_response = self._get_simple_response(message, user_id)
                 # Store the response and return early
                 self._store_message(user_id, conversation.id, ai_response, MessageRole.assistant)
                 return {
@@ -126,7 +126,7 @@ class AIAgentService:
                 print(error_msg)  # Log the error
                 # Before returning the error, try to provide a helpful fallback response
                 # based on the original message if OpenAI is unavailable
-                ai_response = self._get_simple_response(message)
+                ai_response = self._get_simple_response(message, user_id)
                 # Store the response
                 self._store_message(user_id, conversation.id, ai_response, MessageRole.assistant)
                 return {
@@ -237,11 +237,54 @@ class AIAgentService:
                 "error": str(e)
             }
 
-    def _get_simple_response(self, message: str) -> str:
+    def _get_simple_response(self, message: str, user_id: int = None) -> str:
         """
         Provide a simple response when OpenAI API is not configured
+        Also handles basic task operations directly
         """
         message_lower = message.lower()
+
+        # Try to extract task title from common patterns
+        task_title = None
+        if any(keyword in message_lower for keyword in ['add task', 'create task', 'new task', 'add new', 'create new']):
+            # Extract text after the command
+            for keyword in ['add task', 'create task', 'new task', 'add new task', 'create new task']:
+                if keyword in message_lower:
+                    parts = message_lower.split(keyword, 1)
+                    if len(parts) > 1 and parts[1].strip():
+                        task_title = parts[1].strip()
+                        break
+        elif 'remember to' in message_lower:
+            parts = message_lower.split('remember to', 1)
+            if len(parts) > 1 and parts[1].strip():
+                task_title = parts[1].strip()
+        elif ('buy' in message_lower or 'purchase' in message_lower) and len(message_lower.split()) <= 5:
+            # Simple buy commands like "buy milk", "buy groceries"
+            task_title = message.strip()
+
+        # If we extracted a task title and have a user_id, create the task
+        if task_title and user_id:
+            try:
+                from sqlmodel import Session
+                from db.database import engine
+                from models.task import Task
+
+                with Session(engine) as session:
+                    new_task = Task(
+                        user_id=user_id,
+                        title=task_title.capitalize(),
+                        description="",
+                        status="pending"
+                    )
+                    session.add(new_task)
+                    session.commit()
+                    session.refresh(new_task)
+
+                    return f"✓ Task created: '{new_task.title}'. Author: Umema Sultan. I've added this to your task list!"
+            except Exception as e:
+                print(f"Error creating task: {e}")
+                return f"I understood you want to add '{task_title}', but encountered an error. Please try using the task manager interface. Author: Umema Sultan."
+
         if (any(keyword in message_lower for keyword in ['add task', 'create task', 'new task', 'remember to', 'create new', 'add new']) or
            ('buy' in message_lower or 'purchase' in message_lower) and (
                (len(message_lower.split()) <= 4) or
