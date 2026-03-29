@@ -254,6 +254,10 @@ This project is licensed under the MIT License.
 
 **Umema Sultan**
 
+A passionate full-stack developer specializing in AI-powered applications and modern web technologies. This project showcases the integration of cutting-edge AI capabilities with intuitive user interfaces to create practical, production-ready solutions. Focused on building scalable applications that enhance productivity and user experience through intelligent automation.
+
+Connect: [GitHub](https://github.com/umemasultan)
+
 ## 🙏 Acknowledgments
 
 - OpenAI for GPT API
