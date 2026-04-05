@@ -1,0 +1,129 @@
+openapi: 3.0.0
+info:
+  title: Todo AI Chatbot API
+  version: 1.0.0
+  description: API for AI-powered todo management chatbot
+
+paths:
+  /api/{user_id}/chat:
+    post:
+      summary: Send a message to the AI chatbot
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user's unique identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: The user's message to the chatbot
+                  example: "Add task: Buy milk"
+                conversation_id:
+                  type: string
+                  description: Optional conversation ID to continue existing conversation
+                  example: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        '200':
+          description: Successful response from the AI chatbot
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: The AI chatbot's response
+                    example: "I've added the task 'Buy milk' for you."
+                  conversation_id:
+                    type: string
+                    description: The conversation ID
+                    example: "123e4567-e89b-12d3-a456-426614174000"
+                  message_id:
+                    type: string
+                    description: The ID of the new message
+                    example: "123e4567-e89b-12d3-a456-426614174001"
+        '400':
+          description: Bad request - invalid input
+        '500':
+          description: Internal server error
+
+  /api/{user_id}/conversations:
+    get:
+      summary: Get user's conversation history
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user's unique identifier
+      responses:
+        '200':
+          description: List of user's conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Conversation ID
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: When the conversation was created
+                    updated_at:
+                      type: string
+                      format: date-time
+                      description: When the conversation was last updated
+
+  /api/{user_id}/conversations/{conversation_id}/messages:
+    get:
+      summary: Get messages in a specific conversation
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user's unique identifier
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The conversation ID
+      responses:
+        '200':
+          description: List of messages in the conversation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Message ID
+                    role:
+                      type: string
+                      enum: [user, assistant]
+                      description: The role of the message sender
+                    content:
+                      type: string
+                      description: The message content
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: When the message was created
