@@ -1,7 +1,10 @@
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from datetime import datetime
 import enum
+
+if TYPE_CHECKING:
+    from .conversation import Conversation
 
 
 class MessageRole(str, enum.Enum):
@@ -33,7 +36,3 @@ class MessageRead(MessageBase):
 
 class MessageCreate(MessageBase):
     pass
-
-
-# Update the forward reference after definition
-Message.model_rebuild()

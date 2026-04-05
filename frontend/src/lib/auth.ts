@@ -51,7 +51,16 @@ export const handleUnauthorized = (): void => {
 // Decode JWT token to get user info
 export const decodeToken = (token: string): any | null => {
   try {
-    const base64Url = token.split('.')[1];
+    if (!token || typeof token !== 'string') {
+      return null;
+    }
+
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      return null;
+    }
+
+    const base64Url = parts[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(
       atob(base64)
@@ -68,8 +77,12 @@ export const decodeToken = (token: string): any | null => {
 };
 
 // Check if token is expired
-export const isTokenExpired = (token: string): boolean => {
+export const isTokenExpired = (token: string | null): boolean => {
   try {
+    if (!token) {
+      return true;
+    }
+
     const decoded = decodeToken(token);
     if (!decoded || !decoded.exp) {
       return true;

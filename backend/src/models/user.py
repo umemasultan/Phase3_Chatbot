@@ -1,18 +1,11 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
-from datetime import datetime
-from passlib.context import CryptContext
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-class UserBase(SQLModel):
-    email: str = Field(unique=True, index=True)
-    name: str
-
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from datetime import datetime
 from passlib.context import CryptContext
+
+if TYPE_CHECKING:
+    from .task import Task
+    from .conversation import Conversation
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

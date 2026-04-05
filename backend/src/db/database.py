@@ -4,7 +4,15 @@ from sqlalchemy.engine import Engine
 import sqlite3
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./taskmanager.db")
+# Use environment variable for database URL, with fallback to local SQLite
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/taskmanager.db")
+
+# Create data directory if it doesn't exist
+if DATABASE_URL.startswith("sqlite"):
+    db_path = DATABASE_URL.replace("sqlite:///", "")
+    db_dir = os.path.dirname(db_path)
+    if db_dir and not os.path.exists(db_dir):
+        os.makedirs(db_dir, exist_ok=True)
 
 engine = create_engine(DATABASE_URL, echo=True)
 

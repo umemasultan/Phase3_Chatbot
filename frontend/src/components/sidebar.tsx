@@ -43,59 +43,86 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className={`${isMobile ? 'fixed inset-y-0 left-0 z-50' : ''} bg-white shadow h-full ${isExpanded ? 'w-64' : 'w-20'} transition-all duration-300`}>
-      <div className="p-4 h-full flex flex-col">
-        <div className="flex justify-between items-center mb-4">
+    <aside className={`${isMobile ? 'fixed inset-y-0 left-0 z-40 backdrop-blur-2xl bg-white/95 dark:bg-[#050E3C]/95 mt-20' : 'sticky top-20 bg-white/70 dark:bg-[#050E3C]/80 backdrop-blur-2xl'} border-r border-gray-200/50 dark:border-[#0A1854]/50 ${isMobile ? 'h-[calc(100vh-5rem)]' : 'h-[calc(100vh-5rem)]'} ${isExpanded ? 'w-80' : 'w-20'} transition-all duration-300 flex-shrink-0 shadow-2xl`}>
+      <div className="p-6 h-full flex flex-col overflow-y-auto">
+        <div className="flex justify-between items-center mb-8">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-gray-500 hover:text-gray-700"
+            className="relative p-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 rounded-xl transition-all duration-200 group overflow-hidden hover:shadow-lg"
           >
-            {isExpanded ? '«' : '»'}
+            <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-10 transition-opacity"></span>
+            {isExpanded ? (
+              <svg className="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              </svg>
+            )}
           </button>
-          {isMobile && (
+          {isMobile && isExpanded && (
             <button
               onClick={() => setIsExpanded(false)}
-              className="text-gray-500 hover:text-gray-700 md:hidden"
+              className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#0A1854] rounded-lg md:hidden"
             >
-              ✕
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           )}
         </div>
 
         {isExpanded && (
           <>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Filters</h2>
-
-            <div className="mb-8 flex-1">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Status</h3>
-              <ul className="space-y-1">
+            <div className="mb-8">
+              <h2 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 flex items-center">
+                <span className="w-10 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mr-2 rounded-full"></span>
+                Filters
+              </h2>
+              <ul className="space-y-2">
                 {filters.map((filter) => (
                   <li key={filter.value}>
                     <Link
                       href={`/?filter=${filter.value}`}
-                      className={`block px-3 py-2 text-sm rounded-md ${
+                      className={`relative flex items-center px-4 py-3.5 text-sm font-semibold rounded-xl transition-all duration-300 overflow-hidden group ${
                         pathname.includes(filter.value) || (filter.value === 'all' && pathname === '/')
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'text-gray-600 hover:bg-gray-100'
+                          ? 'text-white shadow-xl'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#0A1854]/50'
                       }`}
                     >
-                      {filter.name}
+                      {(pathname.includes(filter.value) || (filter.value === 'all' && pathname === '/')) && (
+                        <span className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient"></span>
+                      )}
+                      <span className="relative z-10 mr-3 text-xl">
+                        {filter.value === 'all' && '📋'}
+                        {filter.value === 'pending' && '⏳'}
+                        {filter.value === 'in-progress' && '🔄'}
+                        {filter.value === 'completed' && '✅'}
+                      </span>
+                      <span className="relative z-10">{filter.name}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Statistics</h3>
-              <ul className="space-y-2">
+            <div className="mt-auto pt-6 border-t border-gray-200 dark:border-[#0A1854]">
+              <h3 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 flex items-center">
+                <span className="w-10 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mr-2 rounded-full"></span>
+                Statistics
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
                 {stats.map((stat) => (
-                  <li key={stat.name} className="flex justify-between text-sm">
-                    <span className="text-gray-600">{stat.name}</span>
-                    <span className="font-medium">{stat.value}</span>
-                  </li>
+                  <div key={stat.name} className="relative group overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-[#0A1854] dark:to-[#050E3C] p-4 rounded-xl border border-gray-200/50 dark:border-[#0A1854] hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="relative z-10">
+                      <div className="text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">{stat.value}</div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400 mt-1.5 font-semibold">{stat.name}</div>
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </>
         )}

@@ -1,7 +1,10 @@
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from datetime import datetime
 import enum
+
+if TYPE_CHECKING:
+    from .user import User
 
 class TaskStatus(str, enum.Enum):
     pending = "pending"

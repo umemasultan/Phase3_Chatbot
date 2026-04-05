@@ -1,0 +1,31 @@
+E:\Hackathon_2\Phase_3\backend\src\main.py:22: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [18532]
+INFO:     Waiting for application startup.
+2026-03-29 04:41:38,988 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2026-03-29 04:41:38,989 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("tasks")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("tasks")
+2026-03-29 04:41:38,989 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2026-03-29 04:41:38,990 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2026-03-29 04:41:38,990 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2026-03-29 04:41:38,991 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("conversations")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("conversations")
+2026-03-29 04:41:38,991 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2026-03-29 04:41:38,991 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("messages")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("messages")
+2026-03-29 04:41:38,991 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2026-03-29 04:41:38,992 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)

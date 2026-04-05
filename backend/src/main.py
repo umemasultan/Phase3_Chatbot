@@ -16,17 +16,30 @@ from fastapi.middleware.cors import CORSMiddleware
 # Import modules using absolute paths within the same package
 from routers import task, task_v2, auth, chat
 
-app = FastAPI(title="Task Manager API")
+app = FastAPI(
+    title="Task Manager API",
+    description="FastAPI backend for Task Manager with AI chatbot",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
 
 # Initialize database tables
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
 
-# Configure CORS - MUST be before route definitions
+# Configure CORS - Allow frontend access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for development
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://*.vercel.app",
+        "https://*.netlify.app",
+        "https://*.hf.space",
+        "*"  # Allow all for development
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,8 +54,19 @@ app.include_router(chat.router)   # AI Chatbot router
 
 @app.get("/")
 def read_root():
-    return {"message": "Task Manager API"}
+    return {
+        "message": "Task Manager API",
+        "version": "1.0.0",
+        "author": "Umema Sultan",
+        "docs": "/docs",
+        "status": "running"
+    }
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "timestamp": "2026-04-05"}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

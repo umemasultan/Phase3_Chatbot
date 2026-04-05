@@ -1,6 +1,10 @@
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from datetime import datetime
+
+if TYPE_CHECKING:
+    from .user import User
+    from .message import Message
 
 
 class ConversationBase(SQLModel):
@@ -27,7 +31,3 @@ class ConversationRead(ConversationBase):
 
 class ConversationCreate(ConversationBase):
     pass
-
-
-# Update the forward reference after definition
-Conversation.model_rebuild()
