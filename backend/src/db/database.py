@@ -5,16 +5,29 @@ import sqlite3
 import os
 
 # Use environment variable for database URL, with fallback to local SQLite
+# For Neon PostgreSQL, set DATABASE_URL to: postgresql://user:password@host/dbname
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/taskmanager.db")
 
-# Create data directory if it doesn't exist
+# Create data directory if it doesn't exist (only for SQLite)
 if DATABASE_URL.startswith("sqlite"):
     db_path = DATABASE_URL.replace("sqlite:///", "")
     db_dir = os.path.dirname(db_path)
     if db_dir and not os.path.exists(db_dir):
         os.makedirs(db_dir, exist_ok=True)
 
-engine = create_engine(DATABASE_URL, echo=True)
+# Configure engine based on database type
+if DATABASE_URL.startswith("postgresql"):
+    # Neon PostgreSQL configuration
+    engine = create_engine(
+        DATABASE_URL,
+        echo=True,
+        pool_pre_ping=True,  # Verify connections before using
+        pool_size=5,
+        max_overflow=10
+    )
+else:
+    # SQLite configuration
+    engine = create_engine(DATABASE_URL, echo=True)
 
 def create_db_and_tables():
     # Import models here to register them with the metadata
