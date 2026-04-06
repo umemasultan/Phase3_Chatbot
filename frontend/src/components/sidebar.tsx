@@ -43,7 +43,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className={`${isMobile ? 'fixed inset-y-0 left-0 z-40 backdrop-blur-2xl bg-white/95 dark:bg-[#050E3C]/95 mt-20' : 'sticky top-20 bg-white/70 dark:bg-[#050E3C]/80 backdrop-blur-2xl'} border-r border-gray-200/50 dark:border-[#0A1854]/50 ${isMobile ? 'h-[calc(100vh-5rem)]' : 'h-[calc(100vh-5rem)]'} ${isExpanded ? 'w-80' : 'w-20'} transition-all duration-300 flex-shrink-0 shadow-2xl`}>
+    <aside className={`${isMobile ? 'fixed inset-y-0 left-0 z-40 backdrop-blur-2xl bg-white/95 dark:bg-[#050E3C]/95 mt-16' : 'sticky top-16 bg-white/70 dark:bg-[#050E3C]/80 backdrop-blur-2xl'} border-r border-gray-200/50 dark:border-[#0A1854]/50 ${isMobile ? 'h-[calc(100vh-4rem)]' : 'h-[calc(100vh-4rem)]'} ${isExpanded ? 'w-80' : 'w-20'} transition-all duration-300 flex-shrink-0 shadow-2xl`}>
       <div className="p-6 h-full flex flex-col overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           <button

@@ -67,7 +67,12 @@ async def chat(
         )
     except Exception as e:
         logger.error(f"Error processing chat request: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error processing chat request: {str(e)}")
+        # Return a user-friendly error instead of 500
+        return ChatResponse(
+            response="I'm having trouble processing your request right now. Please try again later or use the task manager interface directly.",
+            conversation_id=request.conversation_id or str(user_id),
+            message_id=None
+        )
 
 
 @router.get("/{user_id}/conversations")

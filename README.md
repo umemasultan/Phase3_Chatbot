@@ -270,5 +270,7 @@ A passionate full-stack developer specializing in AI-powered applications and mo
 ---
 
 <div align="center">
-  <strong>Built with ❤️ using Next.js, FastAPI, and OpenAI</strong>
+  <strong>Built with ❤️ by Umema Sultan | © 2026</strong>
+  <br/>
+  <em>Powered by Next.js, FastAPI, and OpenAI</em>
 </div>

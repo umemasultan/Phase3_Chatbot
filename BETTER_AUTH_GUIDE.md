@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 # Better Auth Integration Guide
 
 ## Overview

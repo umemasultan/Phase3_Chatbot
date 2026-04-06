@@ -22,6 +22,17 @@ export default function Dashboard() {
   const [sortBy, setSortBy] = useState<'date' | 'title' | 'status'>('date');
   const [isChatOpen, setIsChatOpen] = useState(false);
 
+  // Get filter from URL on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const filterParam = urlParams.get('filter');
+      if (filterParam && ['all', 'pending', 'in-progress', 'completed'].includes(filterParam)) {
+        setFilter(filterParam as any);
+      }
+    }
+  }, []);
+
   // Fetch tasks from API
   useEffect(() => {
     const fetchTasks = async () => {
@@ -90,18 +101,18 @@ export default function Dashboard() {
   }, [tasks, searchQuery, sortBy]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-[#020817] dark:via-[#050E3C] dark:to-[#0A1854]">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-[#020817] dark:via-[#050E3C] dark:to-[#0A1854] pb-20">
       <Navbar />
-      <div className="flex pt-20">
+      <div className="flex pt-16">
         <Sidebar />
         <main className="flex-1 px-6 py-8 sm:px-8 lg:px-12 w-full max-w-[1600px] mx-auto">
           <div className="mb-10">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 mb-8">
               <div>
-                <h1 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-3">
+                <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-1.5">
                   Dashboard
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-medium">Manage and track your tasks efficiently</p>
+                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm font-medium">Streamline your workflow with intelligent task management</p>
               </div>
               <Button href="/tasks/new" variant="primary" size="md">
                 <span className="flex items-center gap-2">
@@ -236,11 +247,24 @@ export default function Dashboard() {
         </main>
       </div>
 
+      {/* Footer with Author Credit */}
+      <footer className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-gray-200/30 dark:border-slate-700/30 py-4 z-40">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+            Crafted with <span className="text-red-500 animate-pulse">❤️</span> by{' '}
+            <span className="font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              Umema Sultan
+            </span>
+            {' '}© 2026
+          </p>
+        </div>
+      </footer>
+
       {/* Chatbot Floating Button */}
       {!isChatOpen && (
         <button
           onClick={() => setIsChatOpen(true)}
-          className="fixed bottom-8 right-8 p-5 rounded-2xl text-white overflow-hidden group shadow-2xl z-[9999] transform hover:scale-110 transition-all duration-300"
+          className="fixed bottom-24 right-8 p-5 rounded-2xl text-white overflow-hidden group shadow-2xl z-[9999] transform hover:scale-110 transition-all duration-300"
           aria-label="Open chat"
         >
           <span className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"></span>

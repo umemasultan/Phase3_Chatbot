@@ -15,7 +15,7 @@ MCP Tool for adding a new task
 """
 from mcp.server import server
 from pydantic import BaseModel, Field
-from sqlmodel import Session, select
+from sqlmodel import Session
 import sys
 import os
 

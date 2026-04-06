@@ -46,55 +46,56 @@ export default function TaskCard({ task }: TaskCardProps) {
 
   return (
     <Link href={`/tasks/${task.id}`} className="block group">
-      <div className="relative bg-white dark:bg-[#0A1854]/40 rounded-2xl shadow-lg hover:shadow-2xl dark:shadow-[#050E3C]/50 overflow-hidden border border-gray-200/50 dark:border-[#0A1854] transition-all duration-500 transform hover:-translate-y-1 backdrop-blur-sm">
-        {/* Animated gradient border on hover */}
-        <div className={`absolute inset-0 bg-gradient-to-r ${getStatusGradient(task.status)} opacity-0 group-hover:opacity-20 transition-opacity duration-500`}></div>
+      <div className="relative bg-gradient-to-br from-white/90 via-white/80 to-white/70 dark:from-slate-900/90 dark:via-slate-800/80 dark:to-slate-900/70 rounded-xl shadow-md hover:shadow-lg dark:shadow-blue-900/20 overflow-hidden border border-white/20 dark:border-slate-700/50 transition-all duration-300 transform hover:-translate-y-1 backdrop-blur-xl">
 
-        {/* Top accent bar */}
+        {/* Animated gradient overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${getStatusGradient(task.status)} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+
+        {/* Top accent bar with gradient */}
         <div className={`h-1 bg-gradient-to-r ${getStatusGradient(task.status)}`}></div>
 
-        <div className="relative p-6">
+        <div className="relative p-4">
           {/* Status badge */}
-          <div className="flex items-center justify-between mb-4">
-            <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold backdrop-blur-md ${
+          <div className="flex items-center justify-between mb-3">
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold backdrop-blur-xl shadow-sm ${
               task.status === 'pending'
-                ? 'bg-amber-500/10 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/20'
+                ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-600 dark:text-amber-300 border border-amber-400/30'
                 : task.status === 'in-progress'
-                  ? 'bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/20'
-                  : 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20'
+                  ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-600 dark:text-blue-300 border border-blue-400/30'
+                  : 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-400/30'
             }`}>
               {getStatusIcon(task.status)}
-              <span className="uppercase tracking-wide">{task.status.replace('-', ' ')}</span>
+              <span className="uppercase tracking-wider">{task.status.replace('-', ' ')}</span>
             </span>
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300 line-clamp-2">
+          <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:via-purple-600 group-hover:to-pink-600 transition-all duration-300 line-clamp-2 leading-tight">
             {task.title}
           </h3>
 
           {/* Description */}
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-6 line-clamp-3 leading-relaxed">
-            {task.description}
+          <p className="text-gray-600 dark:text-gray-300 text-xs mb-4 line-clamp-2 leading-relaxed">
+            {task.description || 'No description provided'}
           </p>
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200/50 dark:border-[#0A1854]">
-            <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-              <div className="p-2 bg-gray-100/50 dark:bg-[#050E3C]/50 rounded-lg">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex items-center justify-between pt-3 border-t border-gray-200/30 dark:border-slate-700/50">
+            <div className="flex items-center gap-1.5 text-[10px] text-gray-600 dark:text-gray-300">
+              <div className="p-1.5 bg-gradient-to-br from-gray-100/80 to-gray-200/60 dark:from-slate-800/80 dark:to-slate-700/60 rounded-md backdrop-blur-sm">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <span className="font-medium">
+              <span className="font-semibold">
                 {task.updatedAt ? new Date(task.updatedAt).toLocaleDateString() : 'N/A'}
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-              <span className="text-xs font-semibold">View</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-1 group-hover:translate-x-0">
+              <span className="text-[10px] font-bold">View</span>
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
               </svg>
             </div>
           </div>

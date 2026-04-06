@@ -116,13 +116,16 @@ class AIAgentService:
             except Exception as openai_error:
                 error_msg = f"Error with OpenAI API: {str(openai_error)}"
                 print(error_msg)
-                ai_response = self._get_simple_response(message, user_id)
+                # Check if it's a rate limit or quota error
+                if "rate_limit" in str(openai_error).lower() or "quota" in str(openai_error).lower() or "429" in str(openai_error):
+                    ai_response = "I'm currently experiencing API limitations. However, I can still help you! " + self._get_simple_response(message, user_id)
+                else:
+                    ai_response = self._get_simple_response(message, user_id)
                 self._store_message(user_id, conversation.id, ai_response, MessageRole.assistant)
                 return {
                     "response": ai_response,
                     "conversation_id": str(conversation.id) if conversation else "new",
-                    "message_id": "temp_id",
-                    "error": str(openai_error)
+                    "message_id": "temp_id"
                 }
 
             # Handle tool calls if present (Runner pattern)

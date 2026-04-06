@@ -43,7 +43,8 @@ def read_root():
         "version": "1.0.0",
         "author": "Umema Sultan",
         "docs": "/docs",
-        "status": "running"
+        "status": "running",
+        "year": "2026"
     }
 
 @app.get("/health")
