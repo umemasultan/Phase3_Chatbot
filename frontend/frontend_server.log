@@ -27,3 +27,6 @@
  ○ Compiling /tasks/new ...
  ✓ Compiled /tasks/new in 1787ms (731 modules)
  GET / 200 in 237ms
+ GET / 200 in 67ms
+   Reload env: .env.local
+ ✓ Compiled in 3.4s (810 modules)

@@ -6,5 +6,11 @@
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_API_URL": "https://umemasultan11-task-manager-backend.hf.space"
+  },
+  "experimentalServices": {
+    "web": {
+      "routePrefix": "/",
+      "buildCommand": "pip install -r requirements.txt"
+    }
   }
 }
