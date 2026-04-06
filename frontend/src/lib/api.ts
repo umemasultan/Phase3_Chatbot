@@ -34,7 +34,27 @@ const request = async (endpoint: string, options: RequestInit = {}) => {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+    // Provide user-friendly error messages
+    let errorMessage = errorData.detail;
+    if (!errorMessage) {
+      switch (response.status) {
+        case 503:
+          errorMessage = 'Service temporarily unavailable. Please try again later.';
+          break;
+        case 500:
+          errorMessage = 'Server error. Please try again later.';
+          break;
+        case 404:
+          errorMessage = 'Resource not found.';
+          break;
+        case 400:
+          errorMessage = 'Invalid request. Please check your input.';
+          break;
+        default:
+          errorMessage = `Request failed with status ${response.status}`;
+      }
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json();
@@ -54,7 +74,27 @@ const authRequest = async (endpoint: string, options: RequestInit = {}) => {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+    // Provide user-friendly error messages
+    let errorMessage = errorData.detail;
+    if (!errorMessage) {
+      switch (response.status) {
+        case 503:
+          errorMessage = 'Service temporarily unavailable. Please try again later.';
+          break;
+        case 500:
+          errorMessage = 'Server error. Please try again later.';
+          break;
+        case 404:
+          errorMessage = 'Resource not found.';
+          break;
+        case 400:
+          errorMessage = 'Invalid request. Please check your input.';
+          break;
+        default:
+          errorMessage = `Request failed with status ${response.status}`;
+      }
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json();
